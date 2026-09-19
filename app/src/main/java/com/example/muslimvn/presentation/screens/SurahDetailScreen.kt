@@ -617,7 +617,7 @@ private fun TafsirBottomSheet(
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Text(
-                                            text = "Bản dịch ngoại tuyến bởi Google AI",
+                                            text = "Bản dịch tiếng Việt",
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.onTertiaryContainer
                                         )

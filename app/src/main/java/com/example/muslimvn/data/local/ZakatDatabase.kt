@@ -23,7 +23,7 @@ class ZakatConverters {
     fun toLocalDate(value: String?): LocalDate? = value?.let { LocalDate.parse(it) }
 }
 
-@Database(entities = [ZakatHistoryEntity::class], version = 1, exportSchema = false)
+@Database(entities = [ZakatHistoryEntity::class], version = 1, exportSchema = true)
 @TypeConverters(ZakatConverters::class)
 abstract class ZakatDatabase : RoomDatabase() {
     abstract val zakatDao: ZakatDao

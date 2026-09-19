@@ -1,0 +1,35 @@
+MuslimVN là ứng dụng di động mã nguồn mở dành riêng cho cộng đồng Muslim tại Việt Nam, mang đến giải pháp toàn diện, chính xác và hoàn toàn miễn phí, không quảng cáo.
+
+✨ TÍNH NĂNG NỔI BẬT:
+
+🕌 GIỜ CẦU NGUYỆN & THÔNG BÁO ADHAN OFFLINE
+• Tính toán giờ cầu nguyện 5 thời mốc chuẩn xác theo thuật toán thiên văn Adhan phù hợp với vị trí tại Việt Nam.
+• Hoạt động hoàn toàn offline, không phụ thuộc vào kết nối mạng.
+• Cài đặt nhắc giờ Adhan với các giọng đọc truyền cảm (Mishary Alafasi, Hamad Daghriry...).
+• Tự chọn tỉnh/thành phố thủ công từ danh sách 63 tỉnh thành Việt Nam hoặc định vị tự động.
+
+🧭 XÁC ĐỊNH HƯỚNG QIBLA CHÍNH XÁC
+• Dùng cảm biến la bàn thiết bị kết hợp tọa độ địa lý để chỉ hướng Kaaba (Makkah) chuẩn xác.
+
+📖 KINH QURAN VỚI BẢN DỊCH TIẾNG VIỆT
+• Đọc trọn bộ 114 Surah với chữ Ả Rập và bản dịch tiếng Việt sạch sẽ.
+• Phát âm thanh recitation từng Ayah/Surah từ các Qari nổi tiếng.
+• Bookmark, tìm kiếm Surah và chế độ hiển thị linh hoạt.
+
+📅 LỊCH HIJRI & SỰ KIỆN HỒI GIÁO
+• Lịch Hồi giáo chính xác, cho phép điều chỉnh lệch ngày thủ công theo quan sát mặt trăng thực tế tại địa phương.
+• Theo dõi các ngày lễ lớn trong năm (Ramadan, Eid al-Fitr, Eid al-Adha...).
+
+🧮 MÁY TÍNH ZAKAT FIQH
+• Hỗ trợ tính toán Zakat chính xác cho Tiền mặt, Vàng, Bạc, Chứng khoán, Bất động sản và Nông nghiệp theo Fiqh chuẩn.
+
+🤲 BỘ AZKAR HẰNG NGÀY & 99 DANH XƯNG ALLAH
+• Đọc Azkar sáng/tối và sau khi cầu nguyện từ Hisnul Muslim.
+• Đọc và tìm hiểu ý nghĩa 99 Danh xưng của Allah bằng tiếng Việt.
+
+🎙️ PODCAST & BÀI GIẢNG HỌC GIẢ
+• Nghe Podcast các học giả thế giới từ Muslim Central.
+• Nghe/xem tài liệu bài giảng của các học giả Việt Nam (Mách Zên & Gosaly Ahmad).
+
+🔒 BẢO MẬT & QUYỀN RIÊNG TƯ
+• 100% Mã nguồn mở, không thu thập dữ liệu cá nhân, không theo dõi, không quảng cáo.

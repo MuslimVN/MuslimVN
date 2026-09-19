@@ -10,12 +10,18 @@ import javax.inject.Inject
 class QuranJsonParser @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+    private val footnoteRegex = Regex("""\[\d+]""")
+
     fun parseQuranData(): Pair<List<SurahEntity>, List<AyahEntity>> {
         val surahs = mutableListOf<SurahEntity>()
         val ayahs = mutableListOf<AyahEntity>()
 
         try {
-            val jsonString = context.assets.open("quran_vi.json").bufferedReader().use { it.readText() }
+            val jsonString = context.assets.open("quran_vi.json")
+                .bufferedReader()
+                .use { it.readText() }
+                .replace("\uFEFF", "")
+
             val jsonArray = JSONArray(jsonString)
 
             for (i in 0 until jsonArray.length()) {
@@ -25,8 +31,8 @@ class QuranJsonParser @Inject constructor(
                 surahs.add(
                     SurahEntity(
                         number = surahNumber,
-                        nameArabic = surahObject.getString("nameArabic"),
-                        nameVietnamese = surahObject.getString("nameVietnamese"),
+                        nameArabic = surahObject.getString("nameArabic").replace("\uFEFF", "").trim(),
+                        nameVietnamese = surahObject.getString("nameVietnamese").trim(),
                         totalAyahs = surahObject.getInt("totalAyahs"),
                         revelationType = surahObject.getString("revelationType")
                     )
@@ -35,12 +41,16 @@ class QuranJsonParser @Inject constructor(
                 val ayahsArray = surahObject.getJSONArray("ayahs")
                 for (j in 0 until ayahsArray.length()) {
                     val ayahObject = ayahsArray.getJSONObject(j)
+                    val rawArabic = ayahObject.getString("textArabic").replace("\uFEFF", "").trim()
+                    val rawVietnamese = ayahObject.getString("textVietnamese")
+                    val cleanVietnamese = footnoteRegex.replace(rawVietnamese, "").trim()
+
                     ayahs.add(
                         AyahEntity(
                             surahId = surahNumber,
                             ayahNumber = ayahObject.getInt("number"),
-                            textArabic = ayahObject.getString("textArabic"),
-                            textVietnamese = ayahObject.getString("textVietnamese")
+                            textArabic = rawArabic,
+                            textVietnamese = cleanVietnamese
                         )
                     )
                 }

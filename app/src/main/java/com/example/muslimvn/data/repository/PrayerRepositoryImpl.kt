@@ -12,6 +12,7 @@ import com.example.muslimvn.domain.models.PrayerCalculationProfile
 import com.example.muslimvn.domain.models.PrayerLocation
 import com.example.muslimvn.domain.models.PrayerName
 import com.example.muslimvn.domain.models.PrayerTimeWindow
+import com.example.muslimvn.domain.models.PrayerAdjustments
 import com.example.muslimvn.domain.models.PrayerTimes
 import com.example.muslimvn.domain.models.RestrictedPeriod
 import com.example.muslimvn.domain.models.RestrictedPeriodType
@@ -36,15 +37,21 @@ class PrayerRepositoryImpl @Inject constructor(
 
     private val vnTimeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh")
 
-    override fun getPrayerTimes(latitude: Double, longitude: Double, date: Date): PrayerTimes {
+    override fun getPrayerTimes(
+        latitude: Double,
+        longitude: Double,
+        date: Date,
+        calculationMethod: String?,
+        asrMethod: AsrMethod?,
+        adjustments: PrayerAdjustments?
+    ): PrayerTimes {
         val coordinates = Coordinates(latitude, longitude)
 
-        // Load calculation preferences
-        val methodStr = runBlocking { settingsRepository.getCalculationMethod().first() }
-        val asrMethod = runBlocking { settingsRepository.getAsrMethod().first() }
-        val adjustments = runBlocking { settingsRepository.getPrayerAdjustments().first() }
+        val methodStr = calculationMethod ?: runBlocking { settingsRepository.getCalculationMethod().first() }
+        val asrM = asrMethod ?: runBlocking { settingsRepository.getAsrMethod().first() }
+        val adj = adjustments ?: runBlocking { settingsRepository.getPrayerAdjustments().first() }
 
-        val params = getCalculationParameters(methodStr, asrMethod)
+        val params = getCalculationParameters(methodStr, asrM)
 
         // Calculate today's, tomorrow's, and yesterday's prayer times
         val todayCalendar = Calendar.getInstance(vnTimeZone).apply { time = date }
@@ -76,25 +83,25 @@ class PrayerRepositoryImpl @Inject constructor(
         val rawYesterdayIsha = yesterdayAdhan.isha ?: Date(rawIsha.time - TimeUnit.DAYS.toMillis(1))
 
         // Apply manual minute adjustments
-        val fajr = applyAdjustment(rawFajr, adjustments.fajr)
+        val fajr = applyAdjustment(rawFajr, adj.fajr)
         val sunrise = rawSunrise // Sunrise is astronomical event
-        val dhuhr = applyAdjustment(rawDhuhr, adjustments.dhuhr)
+        val dhuhr = applyAdjustment(rawDhuhr, adj.dhuhr)
         val solarTransit = rawDhuhr
-        val asr = applyAdjustment(rawAsr, adjustments.asr)
-        val maghrib = applyAdjustment(rawMaghrib, adjustments.maghrib)
+        val asr = applyAdjustment(rawAsr, adj.asr)
+        val maghrib = applyAdjustment(rawMaghrib, adj.maghrib)
         val sunset = maghrib
-        val isha = applyAdjustment(rawIsha, adjustments.isha)
+        val isha = applyAdjustment(rawIsha, adj.isha)
 
-        val tomorrowFajr = applyAdjustment(rawTomorrowFajr, adjustments.fajr)
-        val yesterdayIsha = applyAdjustment(rawYesterdayIsha, adjustments.isha)
+        val tomorrowFajr = applyAdjustment(rawTomorrowFajr, adj.fajr)
+        val yesterdayIsha = applyAdjustment(rawYesterdayIsha, adj.isha)
 
         // Asr Preferred End Boundary (late Asr / yellowing sun phase)
-        val rawAsrPreferredEnd = if (asrMethod == AsrMethod.STANDARD && rawHanafiAsr.after(rawAsr) && rawHanafiAsr.before(rawMaghrib)) {
+        val rawAsrPreferredEnd = if (asrM == AsrMethod.STANDARD && rawHanafiAsr.after(rawAsr) && rawHanafiAsr.before(rawMaghrib)) {
             rawHanafiAsr
         } else {
             Date(sunset.time - 45 * 60_000L)
         }
-        val asrPreferredEnd = applyAdjustment(rawAsrPreferredEnd, adjustments.asr)
+        val asrPreferredEnd = applyAdjustment(rawAsrPreferredEnd, adj.asr)
 
         // Islamic Midnight = Sunset + (Next Fajr - Sunset) / 2
         val islamicMidnight = Date(sunset.time + (tomorrowFajr.time - sunset.time) / 2)
@@ -175,7 +182,7 @@ class PrayerRepositoryImpl @Inject constructor(
             timezone = ZoneId.of("Asia/Ho_Chi_Minh"),
             fajrAngle = params.fajrAngle,
             ishaAngle = params.ishaAngle,
-            asrMethod = asrMethod
+            asrMethod = asrM
         )
 
         val localDate = LocalDate.of(
@@ -203,7 +210,7 @@ class PrayerRepositoryImpl @Inject constructor(
             location = PrayerLocation(latitude, longitude),
             timezone = ZoneId.of("Asia/Ho_Chi_Minh"),
             calculationProfile = profile,
-            adjustments = adjustments,
+            adjustments = adj,
             fajrWindow = fajrWindow,
             dhuhrWindow = dhuhrWindow,
             asrWindow = asrWindow,

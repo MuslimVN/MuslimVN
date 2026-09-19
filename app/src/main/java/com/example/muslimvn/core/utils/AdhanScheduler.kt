@@ -14,54 +14,60 @@ import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Lập lịch báo thức Adhan.
- *
- * Chiến lược "single alarm": tại mọi thời điểm chỉ tồn tại DUY NHẤT một báo thức,
- * dành cho mốc cầu nguyện SẮP TỚI gần nhất. Khi báo thức đó nổ, [AdhanReceiver]
- * sẽ tự tính và lập lịch cho mốc kế tiếp (chaining), thay vì đặt 5 báo thức cùng lúc.
- */
 @Singleton
 class AdhanScheduler @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    /** Mốc cầu nguyện dùng để lập lịch. */
     private data class PrayerAlarm(
         val name: String,
         val timeInMillis: Long
     )
 
     /**
-     * Tìm và chỉ lập MỘT báo thức cho mốc cầu nguyện sắp tới gần nhất.
-     *
-     * Với mỗi mốc: nếu thời gian đã qua (<= bây giờ) thì KHÔNG đặt cho hôm nay,
-     * mà tự động cộng 1 ngày (+24h) để tính cho NGÀY MAI. Sau đó chọn mốc có
-     * thời gian nhỏ nhất (luôn ở tương lai).
+     * Tìm và lập MỘT báo thức cho mốc cầu nguyện sắp tới gần nhất.
+     * Sử dụng giờ chính xác của hôm nay và ngày mai.
      */
-    /**
-     * Tìm và chỉ lập MỘT báo thức cho mốc cầu nguyện sắp tới gần nhất mà người dùng CÓ BẬT lời nhắc.
-     */
-    fun scheduleNextWithSettings(prayerTimes: PrayerTimes, reminders: Map<String, PrayerReminder>) {
+    fun scheduleNextWithSettings(
+        todayTimes: PrayerTimes,
+        tomorrowTimes: PrayerTimes? = null,
+        reminders: Map<String, PrayerReminder>
+    ) {
         val now = System.currentTimeMillis()
 
-        val candidates = listOf(
-            PrayerAlarm(PrayerName.FAJR, prayerTimes.fajr.time),
-            PrayerAlarm(PrayerName.DHUHR, prayerTimes.dhuhr.time),
-            PrayerAlarm(PrayerName.ASR, prayerTimes.asr.time),
-            PrayerAlarm(PrayerName.MAGHRIB, prayerTimes.maghrib.time),
-            PrayerAlarm(PrayerName.ISHA, prayerTimes.isha.time)
-        ).map { prayer ->
-            if (prayer.timeInMillis <= now) {
-                prayer.copy(timeInMillis = prayer.timeInMillis + ONE_DAY_MILLIS)
+        val todayMap = mapOf(
+            PrayerName.FAJR to todayTimes.fajr.time,
+            PrayerName.DHUHR to todayTimes.dhuhr.time,
+            PrayerName.ASR to todayTimes.asr.time,
+            PrayerName.MAGHRIB to todayTimes.maghrib.time,
+            PrayerName.ISHA to todayTimes.isha.time
+        )
+
+        val tomorrowMap = if (tomorrowTimes != null) {
+            mapOf(
+                PrayerName.FAJR to tomorrowTimes.fajr.time,
+                PrayerName.DHUHR to tomorrowTimes.dhuhr.time,
+                PrayerName.ASR to tomorrowTimes.asr.time,
+                PrayerName.MAGHRIB to tomorrowTimes.maghrib.time,
+                PrayerName.ISHA to tomorrowTimes.isha.time
+            )
+        } else null
+
+        val candidates = todayMap.mapNotNull { (name, todayTime) ->
+            val reminder = reminders[name]
+            if (reminder?.mode == ReminderMode.SILENT) return@mapNotNull null
+
+            if (todayTime > now) {
+                PrayerAlarm(name, todayTime)
             } else {
-                prayer
+                val tomorrowTime = tomorrowMap?.get(name) ?: (todayTime + ONE_DAY_MILLIS)
+                if (tomorrowTime > now) {
+                    PrayerAlarm(name, tomorrowTime)
+                } else {
+                    null
+                }
             }
-        }.filter { prayer ->
-            // Chỉ đặt báo thức nếu mode không phải SILENT
-            val reminder = reminders[prayer.name]
-            reminder?.mode != ReminderMode.SILENT
         }
 
         val next = candidates.minByOrNull { it.timeInMillis }
@@ -73,22 +79,12 @@ class AdhanScheduler @Inject constructor(
     }
 
     /**
-     * Lập báo thức cho một mốc cầu nguyện.
-     *
-     * [AlarmManager.setExactAndAllowWhileIdle] CHỈ được gọi với mốc thời gian
-     * STỨC TƯƠNG LAI (> System.currentTimeMillis()): nếu mốc đã qua thì tự động
-     * cộng thêm 1 ngày (+24h); nếu sau khi cộng vẫn không ở tương lai thì bỏ qua.
+     * Lập báo thức cho một mốc thời gian cụ thể.
      */
     fun scheduleAdhan(prayerName: String, prayerTime: Date) {
         val now = System.currentTimeMillis()
-        var triggerAtMillis = prayerTime.time
+        val triggerAtMillis = prayerTime.time
 
-        // Mốc đã qua hôm nay -> không đặt cho hôm nay, dời sang ngày mai (+24h)
-        if (triggerAtMillis <= now) {
-            triggerAtMillis += ONE_DAY_MILLIS
-        }
-
-        // An toàn cuối cùng: tuyệt đối không đặt báo thức trong quá khứ
         if (triggerAtMillis <= now) return
 
         val intent = Intent(context, AdhanReceiver::class.java).apply {
@@ -96,8 +92,6 @@ class AdhanScheduler @Inject constructor(
             putExtra(EXTRA_PRAYER_NAME, prayerName)
         }
 
-        // Request code cố định + FLAG_UPDATE_CURRENT => lần lập lịch mới luôn
-        // THAY THẾ báo thức cũ, không bao giờ tích tụ nhiều báo thức.
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             REQUEST_CODE_ADHAN,
@@ -121,8 +115,7 @@ class AdhanScheduler @Inject constructor(
                     pendingIntent
                 )
             }
-        } catch (e: SecurityException) {
-            // Fallback to non-exact alarm if exact is not allowed
+        } catch (e: Exception) {
             alarmManager.setAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 triggerAtMillis,
@@ -131,7 +124,14 @@ class AdhanScheduler @Inject constructor(
         }
     }
 
-    /** Hủy báo thức Adhan đang chờ (nếu có). */
+    fun canScheduleExactAlarms(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            alarmManager.canScheduleExactAlarms()
+        } else {
+            true
+        }
+    }
+
     fun cancelAdhan() {
         val intent = Intent(context, AdhanReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(

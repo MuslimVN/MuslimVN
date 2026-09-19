@@ -34,7 +34,6 @@ class SurahDetailViewModel @AssistedInject constructor(
     private val audioPlayerManager: AudioPlayerManager,
     private val quranPreferences: QuranPreferences,
     private val quranRepository: com.example.muslimvn.domain.repository.QuranRepository,
-    private val translator: com.example.muslimvn.data.util.TafsirTranslator,
     @Assisted("surahNumber") private val initialSurahNumber: Int,
     @Assisted("startAyah") private val startAyah: Int
 ) : ViewModel() {
@@ -142,7 +141,6 @@ class SurahDetailViewModel @AssistedInject constructor(
     init {
         observeMediaTiming()
         observeSurahAndReciterForTiming()
-        observeTranslationProgress()
         observeDownloadStatus()
     }
 
@@ -169,6 +167,8 @@ class SurahDetailViewModel @AssistedInject constructor(
         }
     }
 
+    fun getStartAyah(): Int = startAyah
+
     fun downloadSurah() {
         viewModelScope.launch {
             val settings = quranSettings.value
@@ -178,18 +178,6 @@ class SurahDetailViewModel @AssistedInject constructor(
             
             quranRepository.startSurahDownload(_surahNumberFlow.value, reciter.quranComId)
         }
-    }
-
-    fun getStartAyah(): Int = startAyah
-
-    private fun observeTranslationProgress() {
-        translator.isDownloading
-            .onEach { isDownloading ->
-                if (isDownloading) {
-                    _translationState.value = TranslationState.DownloadingModel
-                }
-            }
-            .launchIn(viewModelScope)
     }
 
     @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)

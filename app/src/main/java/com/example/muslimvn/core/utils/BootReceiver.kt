@@ -11,6 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,13 +30,20 @@ class BootReceiver : BroadcastReceiver() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
+        val action = intent.action
+        if (action == Intent.ACTION_BOOT_COMPLETED ||
+            action == Intent.ACTION_MY_PACKAGE_REPLACED ||
+            action == Intent.ACTION_TIMEZONE_CHANGED ||
+            action == Intent.ACTION_TIME_CHANGED
+        ) {
             val pendingResult = goAsync()
             scope.launch {
                 try {
-                    val prayerTimes = getPrayerTimesUseCase()
+                    val todayTimes = getPrayerTimesUseCase(date = Date())
+                    val tomorrowCal = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 1) }
+                    val tomorrowTimes = getPrayerTimesUseCase(date = tomorrowCal.time)
                     val reminders = settingsRepository.getPrayerReminders().first()
-                    adhanScheduler.scheduleNextWithSettings(prayerTimes, reminders)
+                    adhanScheduler.scheduleNextWithSettings(todayTimes, tomorrowTimes, reminders)
                 } finally {
                     pendingResult.finish()
                 }

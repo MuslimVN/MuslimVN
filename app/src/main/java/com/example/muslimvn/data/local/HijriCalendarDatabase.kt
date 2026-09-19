@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.muslimvn.data.local.dao.HijriCalendarDao
 import com.example.muslimvn.data.local.entities.HijriDayEntity
 
-@Database(entities = [HijriDayEntity::class], version = 1, exportSchema = false)
+@Database(entities = [HijriDayEntity::class], version = 1, exportSchema = true)
 abstract class HijriCalendarDatabase : RoomDatabase() {
     abstract val hijriCalendarDao: HijriCalendarDao
 

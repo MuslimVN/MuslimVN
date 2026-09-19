@@ -34,6 +34,8 @@ class PrayerRepositoryImplTest {
         override suspend fun updateReminder(reminder: PrayerReminder) {}
         override fun getAppTheme(): Flow<AppTheme> = flowOf(AppTheme.FOLLOW_SYSTEM)
         override suspend fun updateAppTheme(theme: AppTheme) {}
+        override fun useDynamicColor(): Flow<Boolean> = flowOf(false)
+        override suspend fun updateUseDynamicColor(useDynamicColor: Boolean) {}
         override fun getCalculationMethod(): Flow<String> = flowOf(calcMethod)
         override suspend fun updateCalculationMethod(method: String) { calcMethod = method }
         override fun getAsrMethod(): Flow<AsrMethod> = flowOf(asrMethod)
@@ -42,6 +44,8 @@ class PrayerRepositoryImplTest {
         override suspend fun updatePrayerAdjustments(adjustments: PrayerAdjustments) { this.adjustments = adjustments }
         override fun isOnboardingCompleted(): Flow<Boolean> = flowOf(true)
         override suspend fun setOnboardingCompleted(completed: Boolean) {}
+        override fun getSavedLocation(): Flow<com.example.muslimvn.domain.models.SavedLocation> = flowOf(com.example.muslimvn.domain.models.SavedLocation.DEFAULT)
+        override suspend fun saveLocation(location: com.example.muslimvn.domain.models.SavedLocation) {}
         override fun getLastLocation(): Flow<Triple<Double, Double, String?>?> = flowOf(null)
         override suspend fun saveLastLocation(lat: Double, lng: Double, address: String?) {}
     }

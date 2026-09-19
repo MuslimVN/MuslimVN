@@ -16,14 +16,18 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 android {
     namespace = "com.example.muslimvn"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.example.muslimvn"
+        applicationId = "io.github.muslimvn.app"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -31,8 +35,8 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            if (hasReleaseKeystore) {
+        if (hasReleaseKeystore) {
+            create("release") {
                 storeFile = rootProject.file(keystoreProperties["storeFile"] as String)
                 storePassword = keystoreProperties["storePassword"] as String
                 keyAlias = keystoreProperties["keyAlias"] as String
@@ -45,12 +49,8 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = if (hasReleaseKeystore) {
-                signingConfigs.getByName("release")
-            } else {
-                // Fallback: sign with the debug key so local release builds work.
-                // Create keystore.properties (see README) to sign with the real key.
-                signingConfigs.getByName("debug")
+            if (hasReleaseKeystore) {
+                signingConfig = signingConfigs.getByName("release")
             }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -58,6 +58,17 @@ android {
             )
         }
     }
+
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -97,9 +108,6 @@ dependencies {
     ksp(libs.hilt.compiler)
     ksp(libs.androidx.hilt.compiler)
     
-    // Location
-    implementation(libs.play.services.location)
-    
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
@@ -111,7 +119,6 @@ dependencies {
     // Lifecycle & Coroutines
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.coroutines.play.services)
     
     // Adhan
     implementation(libs.adhan)
@@ -124,9 +131,6 @@ dependencies {
     
     // Palette
     implementation(libs.androidx.palette.ktx)
-
-    // ML Kit Translation
-    implementation(libs.google.mlkit.translate)
 
     // Coil
     implementation(libs.coil.compose)

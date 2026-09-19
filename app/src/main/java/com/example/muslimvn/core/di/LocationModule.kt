@@ -1,8 +1,7 @@
 package com.example.muslimvn.core.di
 
 import android.content.Context
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import android.location.LocationManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,9 +15,9 @@ object LocationModule {
 
     @Provides
     @Singleton
-    fun provideFusedLocationProviderClient(
+    fun provideLocationManager(
         @ApplicationContext context: Context
-    ): FusedLocationProviderClient {
-        return LocationServices.getFusedLocationProviderClient(context)
+    ): LocationManager {
+        return context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
 }

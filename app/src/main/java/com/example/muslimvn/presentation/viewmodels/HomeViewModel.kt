@@ -132,7 +132,7 @@ class HomeViewModel @Inject constructor(
                 // Re-schedule when settings change
                 val currentTimes = _uiState.value.prayerTimes
                 if (currentTimes != null) {
-                    adhanScheduler.scheduleNextWithSettings(currentTimes, reminders)
+                    scheduleAdhanAlarm(currentTimes)
                 }
             }
         }
@@ -197,13 +197,13 @@ class HomeViewModel @Inject constructor(
                             // we eventually show the exact times for the user's location.
                             val accurateTimes = getPrayerTimesUseCase(lat = location.latitude, lng = location.longitude)
                             _uiState.update { it.copy(prayerTimes = accurateTimes) }
-                            adhanScheduler.scheduleNextWithSettings(accurateTimes, _uiState.value.reminders)
+                            scheduleAdhanAlarm(accurateTimes)
                         }
                     }
                 }
                 
-                // 3. Schedule Notifications for the initial 'times' (updated again in step 2 if location found)
-                adhanScheduler.scheduleNextWithSettings(times, _uiState.value.reminders)
+                // 3. Schedule Notifications for the initial 'times'
+                scheduleAdhanAlarm(times)
 
             } catch (e: Exception) {
                 if (shouldShowLoading) {
@@ -211,6 +211,14 @@ class HomeViewModel @Inject constructor(
                 }
                 android.util.Log.e("HomeViewModel", "Refresh failed", e)
             }
+        }
+    }
+
+    private fun scheduleAdhanAlarm(todayTimes: PrayerTimes) {
+        viewModelScope.launch {
+            val tomorrowCal = java.util.Calendar.getInstance().apply { add(java.util.Calendar.DAY_OF_YEAR, 1) }
+            val tomorrowTimes = getPrayerTimesUseCase(date = tomorrowCal.time)
+            adhanScheduler.scheduleNextWithSettings(todayTimes, tomorrowTimes, _uiState.value.reminders)
         }
     }
 

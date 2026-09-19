@@ -48,13 +48,12 @@ object DatabaseModule {
     fun provideTrackerDatabase(
         @ApplicationContext context: Context
     ): TrackerDatabase {
+        // Tracker lưu lịch sử theo dõi cầu nguyện của người dùng -> Bảo vệ dữ liệu, không dùng destructive migration
         return Room.databaseBuilder(
             context,
             TrackerDatabase::class.java,
             TrackerDatabase.DATABASE_NAME
-        )
-            .fallbackToDestructiveMigration()
-            .build()
+        ).build()
     }
 
     @Provides
@@ -68,13 +67,12 @@ object DatabaseModule {
     fun provideQuranDatabase(
         @ApplicationContext context: Context
     ): QuranDatabase {
+        // Quran DB chứa bookmark và lịch sử của người dùng -> Đảm bảo không mất dữ liệu
         return Room.databaseBuilder(
             context,
             QuranDatabase::class.java,
             QuranDatabase.DATABASE_NAME
-        )
-            .fallbackToDestructiveMigration()
-            .build()
+        ).build()
     }
 
     @Provides
@@ -88,11 +86,14 @@ object DatabaseModule {
     fun provideHijriCalendarDatabase(
         @ApplicationContext context: Context
     ): HijriCalendarDatabase {
+        // Hijri DB thuần cache lịch -> Có thể tạo lại từ API khi cập nhật schema
         return Room.databaseBuilder(
             context,
             HijriCalendarDatabase::class.java,
             HijriCalendarDatabase.DATABASE_NAME
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
@@ -106,13 +107,13 @@ object DatabaseModule {
     fun providePodcastDatabase(
         @ApplicationContext context: Context
     ): PodcastDatabase {
+        // Podcast DB chứa danh sách yêu thích và tập đã nghe của người dùng
         return Room.databaseBuilder(
             context,
             PodcastDatabase::class.java,
             PodcastDatabase.DATABASE_NAME
         )
             .addMigrations(com.example.muslimvn.data.local.MIGRATION_6_7)
-            .fallbackToDestructiveMigration()
             .build()
     }
 
@@ -128,6 +129,7 @@ object DatabaseModule {
     fun provideZakatDatabase(
         @ApplicationContext context: Context
     ): ZakatDatabase {
+        // Zakat DB lưu lịch sử tính Zakat người dùng -> Giữ nguyên dữ liệu
         return Room.databaseBuilder(
             context,
             ZakatDatabase::class.java,
@@ -146,13 +148,12 @@ object DatabaseModule {
     fun provideAzkarDatabase(
         @ApplicationContext context: Context
     ): AzkarDatabase {
+        // Azkar DB lưu danh sách Azkar yêu thích người dùng -> Bảo vệ dữ liệu
         return Room.databaseBuilder(
             context,
             AzkarDatabase::class.java,
             AzkarDatabase.DATABASE_NAME
-        )
-            .fallbackToDestructiveMigration()
-            .build()
+        ).build()
     }
 
     @Provides
@@ -166,7 +167,8 @@ object DatabaseModule {
     fun provideDownloadedVideoDatabase(
         @ApplicationContext context: Context
     ): com.example.muslimvn.data.local.DownloadedVideoDatabase {
-        return androidx.room.Room.databaseBuilder(
+        // Video đã tải thuần cache file -> Có thể tải lại
+        return Room.databaseBuilder(
             context,
             com.example.muslimvn.data.local.DownloadedVideoDatabase::class.java,
             com.example.muslimvn.data.local.DownloadedVideoDatabase.DATABASE_NAME

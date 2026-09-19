@@ -20,6 +20,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -57,8 +59,10 @@ class AdhanReceiver : BroadcastReceiver() {
                     else -> { /* Do nothing for SILENT */ }
                 }
 
-                val prayerTimes = getPrayerTimesUseCase()
-                adhanScheduler.scheduleNextWithSettings(prayerTimes, reminders)
+                val todayTimes = getPrayerTimesUseCase(date = Date())
+                val tomorrowCal = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 1) }
+                val tomorrowTimes = getPrayerTimesUseCase(date = tomorrowCal.time)
+                adhanScheduler.scheduleNextWithSettings(todayTimes, tomorrowTimes, reminders)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to handle adhan alarm", e)
             } finally {
@@ -68,14 +72,19 @@ class AdhanReceiver : BroadcastReceiver() {
     }
 
     private fun startAdhanService(context: Context, prayerName: String, adhanFile: String?) {
-        val intent = Intent(context, AdhanService::class.java).apply {
-            putExtra(AdhanService.EXTRA_PRAYER_NAME, prayerName)
-            putExtra(AdhanService.EXTRA_ADHAN_FILE, adhanFile)
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent)
-        } else {
-            context.startService(intent)
+        try {
+            val intent = Intent(context, AdhanService::class.java).apply {
+                putExtra(AdhanService.EXTRA_PRAYER_NAME, prayerName)
+                putExtra(AdhanService.EXTRA_ADHAN_FILE, adhanFile)
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(intent)
+            } else {
+                context.startService(intent)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to start foreground AdhanService, fallback to notification", e)
+            showNotification(context, prayerName)
         }
     }
 
@@ -83,7 +92,7 @@ class AdhanReceiver : BroadcastReceiver() {
         val soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + R.raw.muslimvn_notification)
         
         val notification = NotificationCompat.Builder(context, NotificationModule.ADHAN_CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher) // Use app icon for now
+            .setSmallIcon(R.drawable.ic_stat_adhan)
             .setContentTitle(context.getString(R.string.adhan_notification_title, prayerName))
             .setContentText(context.getString(R.string.adhan_notification_content, prayerName))
             .setPriority(NotificationCompat.PRIORITY_HIGH)

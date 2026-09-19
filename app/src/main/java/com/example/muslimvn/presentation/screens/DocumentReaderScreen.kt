@@ -1,5 +1,7 @@
 package com.example.muslimvn.presentation.screens
 
+import android.content.Intent
+import android.net.Uri
 import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -7,10 +9,13 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,17 +25,21 @@ fun DocumentReaderScreen(
     title: String,
     onBackClick: () -> Unit
 ) {
+    val context = LocalContext.current
     var isLoading by remember { mutableStateOf(true) }
-    
-    // PDF/DOCX files often don't render directly in WebView. 
-    // We use Google Docs Viewer as a reliable proxy.
-    val finalUrl = remember(url) {
-        val lowercaseUrl = url.lowercase()
-        if (lowercaseUrl.endsWith(".pdf") || lowercaseUrl.endsWith(".doc") || lowercaseUrl.endsWith(".docx")) {
-            "https://docs.google.com/viewer?embedded=true&url=${android.net.Uri.encode(url)}"
-        } else {
-            url
-        }
+
+    val isDocumentFile = remember(url) {
+        val lowercase = url.lowercase()
+        lowercase.endsWith(".pdf") || lowercase.endsWith(".doc") || lowercase.endsWith(".docx")
+    }
+
+    fun openInExternalApp() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            context.startActivity(intent)
+        } catch (_: Exception) { }
     }
 
     Scaffold(
@@ -44,6 +53,14 @@ fun DocumentReaderScreen(
                             contentDescription = "Quay lại"
                         )
                     }
+                },
+                actions = {
+                    IconButton(onClick = { openInExternalApp() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                            contentDescription = "Mở bằng ứng dụng ngoài"
+                        )
+                    }
                 }
             )
         }
@@ -53,43 +70,67 @@ fun DocumentReaderScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            AndroidView(
-                factory = { context ->
-                    WebView(context).apply {
-                        layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
+            if (isDocumentFile) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = title.ifBlank { "Tài liệu PDF / Word" },
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = { openInExternalApp() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                            contentDescription = null
                         )
-                        settings.apply {
-                            javaScriptEnabled = true
-                            domStorageEnabled = true
-                            loadWithOverviewMode = true
-                            useWideViewPort = true
-                            builtInZoomControls = true
-                            displayZoomControls = false
-                        }
-                        webViewClient = object : WebViewClient() {
-                            override fun onPageFinished(view: WebView?, url: String?) {
-                                super.onPageFinished(view, url)
-                                isLoading = false
-                            }
-
-                            override fun shouldOverrideUrlLoading(
-                                view: WebView?,
-                                request: WebResourceRequest?
-                            ): Boolean {
-                                return false // Load within the same webview
-                            }
-                        }
-                        loadUrl(finalUrl)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Mở bằng ứng dụng đọc tài liệu")
                     }
-                },
-                modifier = Modifier.fillMaxSize()
-            )
+                }
+            } else {
+                AndroidView(
+                    factory = { ctx ->
+                        WebView(ctx).apply {
+                            layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                            )
+                            settings.apply {
+                                javaScriptEnabled = true
+                                domStorageEnabled = true
+                                loadWithOverviewMode = true
+                                useWideViewPort = true
+                                builtInZoomControls = true
+                                displayZoomControls = false
+                            }
+                            webViewClient = object : WebViewClient() {
+                                override fun onPageFinished(view: WebView?, pageUrl: String?) {
+                                    super.onPageFinished(view, pageUrl)
+                                    isLoading = false
+                                }
 
-            if (isLoading) {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
+                                override fun shouldOverrideUrlLoading(
+                                    view: WebView?,
+                                    request: WebResourceRequest?
+                                ): Boolean {
+                                    return false
+                                }
+                            }
+                            loadUrl(url)
+                        }
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+
+                if (isLoading) {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
                 }
             }
         }

@@ -9,7 +9,7 @@ import com.example.muslimvn.data.local.entities.SurahEntity
 import com.example.muslimvn.data.local.entities.TafsirEntity
 import com.example.muslimvn.data.local.entities.VerseTimingEntity
 
-@Database(entities = [SurahEntity::class, AyahEntity::class, VerseTimingEntity::class, TafsirEntity::class, DownloadedAyahEntity::class], version = 5, exportSchema = false)
+@Database(entities = [SurahEntity::class, AyahEntity::class, VerseTimingEntity::class, TafsirEntity::class, DownloadedAyahEntity::class], version = 5, exportSchema = true)
 abstract class QuranDatabase : RoomDatabase() {
     abstract val quranDao: QuranDao
 

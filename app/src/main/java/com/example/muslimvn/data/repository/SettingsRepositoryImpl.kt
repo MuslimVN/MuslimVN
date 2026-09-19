@@ -6,14 +6,17 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.muslimvn.core.di.SettingsDataStore
 import com.example.muslimvn.domain.models.AppTheme
 import com.example.muslimvn.domain.models.AsrMethod
+import com.example.muslimvn.domain.models.LocationSource
 import com.example.muslimvn.domain.models.PrayerAdjustments
 import com.example.muslimvn.domain.models.PrayerName
 import com.example.muslimvn.domain.models.PrayerReminder
 import com.example.muslimvn.domain.models.ReminderMode
+import com.example.muslimvn.domain.models.SavedLocation
 import com.example.muslimvn.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -147,6 +150,37 @@ class SettingsRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getSavedLocation(): Flow<SavedLocation> {
+        return dataStore.data.map { preferences ->
+            val lat = preferences[KEY_LAST_LAT]
+            val lng = preferences[KEY_LAST_LNG]
+            val cityName = preferences[KEY_LAST_ADDRESS] ?: "TP. Hồ Chí Minh"
+            val sourceStr = preferences[KEY_LAST_SOURCE]
+            val updatedAt = preferences[KEY_LAST_UPDATED_AT] ?: System.currentTimeMillis()
+
+            if (lat != null && lng != null) {
+                val source = try {
+                    if (sourceStr != null) LocationSource.valueOf(sourceStr) else LocationSource.DEFAULT
+                } catch (e: Exception) {
+                    LocationSource.DEFAULT
+                }
+                SavedLocation(lat, lng, cityName, source, updatedAt)
+            } else {
+                SavedLocation.DEFAULT
+            }
+        }
+    }
+
+    override suspend fun saveLocation(location: SavedLocation) {
+        dataStore.edit { preferences ->
+            preferences[KEY_LAST_LAT] = location.latitude
+            preferences[KEY_LAST_LNG] = location.longitude
+            preferences[KEY_LAST_ADDRESS] = location.cityName
+            preferences[KEY_LAST_SOURCE] = location.source.name
+            preferences[KEY_LAST_UPDATED_AT] = location.updatedAt
+        }
+    }
+
     override fun getLastLocation(): Flow<Triple<Double, Double, String?>?> {
         return dataStore.data.map { preferences ->
             val lat = preferences[KEY_LAST_LAT]
@@ -175,6 +209,8 @@ class SettingsRepositoryImpl @Inject constructor(
         private val KEY_LAST_LAT = doublePreferencesKey("last_lat")
         private val KEY_LAST_LNG = doublePreferencesKey("last_lng")
         private val KEY_LAST_ADDRESS = stringPreferencesKey("last_address")
+        private val KEY_LAST_SOURCE = stringPreferencesKey("last_source")
+        private val KEY_LAST_UPDATED_AT = longPreferencesKey("last_updated_at")
         private val KEY_APP_THEME = stringPreferencesKey("app_theme")
         private val KEY_DYNAMIC_COLOR = booleanPreferencesKey("use_dynamic_color")
         private val KEY_CALCULATION_METHOD = stringPreferencesKey("calculation_method")

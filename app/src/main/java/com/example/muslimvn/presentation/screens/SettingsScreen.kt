@@ -1,10 +1,15 @@
 package com.example.muslimvn.presentation.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -38,6 +43,8 @@ fun SettingsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showSourcesDialog by remember { mutableStateOf(false) }
+    var showDisclaimerDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -52,7 +59,7 @@ fun SettingsScreen(
         Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(bottom = 0.dp)
+                contentPadding = PaddingValues(bottom = 16.dp)
             ) {
                 item { PreferenceHeader(title = "Giao diện") }
                 item {
@@ -121,21 +128,63 @@ fun SettingsScreen(
                     )
                 }
 
+                item { PreferenceHeader(title = "Pháp lý & Thông tin") }
+                item {
+                    PreferenceItem(
+                        title = "Chính sách quyền riêng tư",
+                        subtitle = "Cam kết bảo mật và xử lý dữ liệu vị trí trên thiết bị",
+                        icon = Icons.Default.PrivacyTip,
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/MuslimVN/MuslimVN/blob/master/PRIVACY.md"))
+                            try { context.startActivity(intent) } catch (_: Exception) { }
+                        }
+                    )
+                }
+                item {
+                    PreferenceItem(
+                        title = "Nguồn & Giấy phép",
+                        subtitle = "Thông tin bản quyền mã nguồn, phông chữ và dữ liệu",
+                        icon = Icons.Default.Gavel,
+                        onClick = { showSourcesDialog = true }
+                    )
+                }
+                item {
+                    PreferenceItem(
+                        title = "Liên hệ & Báo lỗi",
+                        subtitle = "Gửi góp ý hoặc báo lỗi qua GitHub Issues",
+                        icon = Icons.Default.BugReport,
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/MuslimVN/MuslimVN/issues"))
+                            try { context.startActivity(intent) } catch (_: Exception) { }
+                        }
+                    )
+                }
+                item {
+                    PreferenceItem(
+                        title = "Tuyên bố miễn trừ trách nhiệm",
+                        subtitle = "Lưu ý về giờ cầu nguyện, Zakat và nội dung học giả",
+                        icon = Icons.AutoMirrored.Filled.HelpOutline,
+                        onClick = { showDisclaimerDialog = true }
+                    )
+                }
+
                 item { PreferenceHeader(title = "Về ứng dụng") }
                 item {
                     PreferenceItem(
                         title = "Đánh giá ứng dụng",
                         icon = Icons.Default.Star,
                         onClick = {
-                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
-                                data = android.net.Uri.parse("market://details?id=${context.packageName}")
+                            val intent = Intent(Intent.ACTION_VIEW).apply {
+                                data = Uri.parse("market://details?id=${context.packageName}")
                             }
                             try {
                                 context.startActivity(intent)
-                            } catch (e: Exception) {
-                                context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
-                                    data = android.net.Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
-                                })
+                            } catch (_: Exception) {
+                                try {
+                                    context.startActivity(Intent(Intent.ACTION_VIEW).apply {
+                                        data = Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
+                                    })
+                                } catch (_: Exception) { }
                             }
                         }
                     )
@@ -170,6 +219,79 @@ fun SettingsScreen(
             onDismiss = { showThemeDialog = false }
         )
     }
+
+    if (showSourcesDialog) {
+        SourcesLicenseDialog(onDismiss = { showSourcesDialog = false })
+    }
+
+    if (showDisclaimerDialog) {
+        DisclaimerDialog(onDismiss = { showDisclaimerDialog = false })
+    }
+}
+
+@Composable
+fun SourcesLicenseDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Nguồn & Giấy phép") },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Text("Mã nguồn ứng dụng:", style = MaterialTheme.typography.titleSmall)
+                Text("• Cấp phép mã nguồn mở GPL-3.0-or-later", style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text("Phông chữ (Fonts):", style = MaterialTheme.typography.titleSmall)
+                Text("• Amiri & Inter: SIL Open Font License 1.1", style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text("Dữ liệu & Âm thanh:", style = MaterialTheme.typography.titleSmall)
+                Text("• Giờ cầu nguyện: Thư viện Adhan (MIT License)", style = MaterialTheme.typography.bodyMedium)
+                Text("• Kinh Quran & Bản dịch: Tanzil & Quran.com API", style = MaterialTheme.typography.bodyMedium)
+                Text("• Lịch Hijri: Aladhan API & Room local cache", style = MaterialTheme.typography.bodyMedium)
+                Text("• Âm thanh Adhan: AlAdhan Project", style = MaterialTheme.typography.bodyMedium)
+                Text("• Học giả Việt Nam: Mách Zên & Gosaly Ahmad (Đã cấp phép)", style = MaterialTheme.typography.bodyMedium)
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Đóng")
+            }
+        }
+    )
+}
+
+@Composable
+fun DisclaimerDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Tuyên bố miễn trừ trách nhiệm") },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Text(
+                    "1. Giờ cầu nguyện, hướng Qibla và tính toán Zakat mang tính tham khảo. Người dùng nên đối chiếu với cộng đồng và giáo sĩ địa phương.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    "2. MuslimVN không thuộc, không liên kết chính thức và không được tài trợ bởi các học giả, Qari hay tổ chức bên thứ ba.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Đã hiểu")
+            }
+        }
+    )
 }
 
 @Composable

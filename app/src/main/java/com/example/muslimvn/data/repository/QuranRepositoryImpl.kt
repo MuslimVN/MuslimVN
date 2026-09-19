@@ -9,7 +9,6 @@ import com.example.muslimvn.data.local.entities.TafsirEntity
 import com.example.muslimvn.data.local.entities.VerseTimingEntity
 import com.example.muslimvn.data.remote.QuranApiService
 import com.example.muslimvn.data.util.QuranJsonParser
-import com.example.muslimvn.data.util.TafsirTranslator
 import com.example.muslimvn.data.workers.MushafDownloadWorker
 import com.example.muslimvn.data.workers.QuranDownloadWorker
 import com.example.muslimvn.domain.models.*
@@ -33,10 +32,11 @@ class QuranRepositoryImpl @Inject constructor(
     private val dao: QuranDao,
     private val apiService: QuranApiService,
     private val jsonParser: QuranJsonParser,
-    private val translator: TafsirTranslator,
     private val gson: Gson,
     @ApplicationContext private val context: Context
 ) : QuranRepository {
+
+    private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private var pagesMapping: List<MushafPageMapping>? = null
     private var coordinatesMap: Map<String, List<List<Int>>>? = null
@@ -168,16 +168,7 @@ class QuranRepositoryImpl @Inject constructor(
     }
 
     override suspend fun translateTafsir(verseKey: String, text: String): String? {
-        // 1. Dịch văn bản
-        val translated = translator.translate(text) ?: return null
-        
-        // 2. Cập nhật vào DB để lần sau dùng luôn
-        val cached = dao.getTafsir(verseKey, 169)
-        if (cached != null) {
-            dao.insertTafsir(cached.copy(translatedText = translated))
-        }
-        
-        return translated
+        return null
     }
 
     override suspend fun initializeData() {
@@ -261,8 +252,7 @@ class QuranRepositoryImpl @Inject constructor(
             audioDir.deleteRecursively()
         }
         // Also clear from DB
-        @OptIn(DelicateCoroutinesApi::class)
-        GlobalScope.launch {
+        repositoryScope.launch {
             dao.deleteAllDownloadedAyahs(reciterId)
         }
     }
@@ -273,8 +263,7 @@ class QuranRepositoryImpl @Inject constructor(
         if (surahDir.exists()) {
             surahDir.deleteRecursively()
         }
-        @OptIn(DelicateCoroutinesApi::class)
-        GlobalScope.launch {
+        repositoryScope.launch {
             dao.deleteSurahDownloadedAyahs(surahNumber, reciterId)
         }
     }

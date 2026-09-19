@@ -165,6 +165,8 @@
     <!-- Adhan notifications -->
     <string name="adhan_notification_title">Đến giờ cầu nguyện %1$s</string>
     <string name="adhan_notification_content">Đã đến giờ thực hiện lễ nguyện %1$s.</string>
+    <string name="adhan_service_content">Đã đến giờ cầu nguyện. Nhấn để dừng Adhan.</string>
+    <string name="adhan_stop">Dừng Adhan</string>
     <string name="adhan_channel_name">Thông báo Adhan</string>
     <string name="adhan_channel_description">Kênh thông báo giờ cầu nguyện</string>
 

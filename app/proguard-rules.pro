@@ -42,3 +42,9 @@
 
 # Gson parse assets/NameAllah.json — giữ DTO để reflection theo tên trường không vỡ khi minify
 -keep class com.example.muslimvn.data.repository.NameAllahRepositoryImpl$* { *; }
+
+# NewPipeExtractor / Rhino JavaScript engine (java.beans is not available on Android)
+-dontwarn java.beans.**
+-dontwarn org.mozilla.javascript.**
+-dontwarn org.schabi.newpipe.extractor.**
+

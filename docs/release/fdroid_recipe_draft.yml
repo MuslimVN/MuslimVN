@@ -1,0 +1,37 @@
+# Bản nháp F-Droid Metadata Recipe cho MuslimVN
+# Owner sử dụng file này để tạo Merge Request lên repo `fdroiddata` (https://gitlab.com/fdroid/fdroiddata)
+
+Categories:
+  - Navigation
+  - Reading
+  - Religion
+License: GPL-3.0-or-later
+SourceCode: https://github.com/MuslimVN/MuslimVN
+IssueTracker: https://github.com/MuslimVN/MuslimVN/issues
+
+AutoName: MuslimVN
+Summary: Offline Prayer Times, Qibla, Quran with Vietnamese Translation, Hijri Calendar & Zakat
+Description: |-
+    MuslimVN là ứng dụng di động mã nguồn mở dành riêng cho cộng đồng Muslim tại Việt Nam.
+
+    Tính năng nổi bật:
+    * Giờ cầu nguyện 5 thời mốc offline chính xác theo thuật toán Adhan thiên văn cho 63 tỉnh thành Việt Nam.
+    * Xác định hướng Qibla chính xác qua cảm biến la bàn.
+    * Kinh Quran chữ Ả Rập kèm bản dịch tiếng Việt sạch sẽ & âm thanh recitation.
+    * Lịch Hijri, Máy tính Zakat Fiqh chuẩn & Bộ Azkar hằng ngày.
+    * Không quảng cáo, không theo dõi, hoàn toàn miễn phí.
+
+RepoType: git
+Repo: https://github.com/MuslimVN/MuslimVN.git
+
+Builds:
+  - versionName: 1.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: app
+    gradle:
+      - yes
+    target: 36
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags ^v[0-9.]+$

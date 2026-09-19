@@ -4,6 +4,7 @@ import com.example.muslimvn.domain.models.AppTheme
 import com.example.muslimvn.domain.models.AsrMethod
 import com.example.muslimvn.domain.models.PrayerAdjustments
 import com.example.muslimvn.domain.models.PrayerReminder
+import com.example.muslimvn.domain.models.SavedLocation
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
@@ -27,6 +28,9 @@ interface SettingsRepository {
 
     fun isOnboardingCompleted(): Flow<Boolean>
     suspend fun setOnboardingCompleted(completed: Boolean)
+
+    fun getSavedLocation(): Flow<SavedLocation>
+    suspend fun saveLocation(location: SavedLocation)
 
     fun getLastLocation(): Flow<Triple<Double, Double, String?>?>
     suspend fun saveLastLocation(lat: Double, lng: Double, address: String?)

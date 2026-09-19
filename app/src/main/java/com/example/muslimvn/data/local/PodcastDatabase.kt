@@ -11,7 +11,6 @@ import com.example.muslimvn.data.local.dao.ScholarDao
 import com.example.muslimvn.data.local.entities.PodcastEpisodeEntity
 import com.example.muslimvn.data.local.entities.ScholarEntity
 
-/** Converter cho trường tags: List<String> <-> chuỗi CSV đơn giản. */
 class PodcastConverters {
 
     @TypeConverter
@@ -32,7 +31,7 @@ val MIGRATION_6_7 = object : Migration(6, 7) {
 @Database(
     entities = [ScholarEntity::class, PodcastEpisodeEntity::class],
     version = 7,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(PodcastConverters::class)
 abstract class PodcastDatabase : RoomDatabase() {

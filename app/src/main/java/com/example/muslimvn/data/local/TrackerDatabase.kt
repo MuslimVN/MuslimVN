@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.muslimvn.data.local.dao.TrackerDao
 import com.example.muslimvn.data.local.entities.TrackerEntity
 
-@Database(entities = [TrackerEntity::class], version = 2, exportSchema = false)
+@Database(entities = [TrackerEntity::class], version = 2, exportSchema = true)
 abstract class TrackerDatabase : RoomDatabase() {
     abstract val trackerDao: TrackerDao
 
