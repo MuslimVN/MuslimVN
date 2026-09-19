@@ -1,74 +1,95 @@
-# MuslimVN (Muslim Vietnam)
+# MuslimVN — The Islamic Companion for Vietnam
 
-**MuslimVN** là ứng dụng di động mã nguồn mở dành riêng cho cộng đồng Muslim tại Việt Nam, cung cấp giờ cầu nguyện offline chính xác, hướng Qibla, Kinh Quran chữ & âm thanh, lịch Hijri, tính toán Zakat, bộ Azkar và nội dung học giả phong phú.
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Android SDK](https://img.shields.io/badge/SDK-26%2B-brightgreen.svg)](https://developer.android.com/about/dashboards)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-purple.svg)](https://kotlinlang.org/)
 
----
-
-## 🌟 Tính năng chính
-
-- 🕌 **Giờ cầu nguyện & Adhan Offline:** Tính toán giờ cầu nguyện chuẩn xác bằng thuật toán thiên văn Adhan (`MUSLIMVN_DEFAULT`), hoạt động offline không cần mạng. Nhắc giờ Adhan linh hoạt theo tùy chọn thông báo.
-- 🧭 **Hướng Qibla:** Xác định hướng Qibla chính xác kết hợp cảm biến thiết bị và vị trí địa lý.
-- 📖 **Kinh Quran:** Đọc 114 Surah kèm bản dịch tiếng Việt sạch sẽ, hỗ trợ nghe phát âm thanh recitation và xem ảnh Mushaf.
-- 📅 **Lịch Hijri:** Theo dõi lịch Hồi giáo kèm điều chỉnh lệch ngày thủ công và các sự kiện tôn giáo lớn trong năm.
-- 🧮 **Máy tính Zakat:** Tính toán Zakat Tiền mặt, Vàng, Bạc, Chứng khoán, Bất động sản và Nông nghiệp theo Fiqh chuẩn kèm disclaimer.
-- 🤲 **Bộ Azkar & 99 Danh xưng Allah:** Đọc và lưu danh sách Azkar yêu thích hàng ngày từ Hisnul Muslim.
-- 🎙️ **Podcast & Bài giảng Học giả:** Nghe Podcast học giả thế giới (Muslim Central) và bài giảng của học giả Việt Nam (Mách Zên & Gosaly Ahmad).
+**MuslimVN** is a professional, privacy-focused, and open-source mobile application tailored for the Muslim community in Vietnam. It provides highly accurate offline prayer times, Qibla direction, Holy Quran with Vietnamese translation, Zakat tools, and rich Islamic educational content.
 
 ---
 
-## 🛠️ Công nghệ & Kiến trúc
+## ✨ Key Features
 
-- **Ngôn ngữ:** 100% Kotlin
-- **UI:** Jetpack Compose + Material 3 Adaptive Navigation
-- **Điều hướng:** Jetpack Navigation 3
-- **Kiến trúc:** Clean Architecture + MVVM + Repository Pattern
-- **Dependency Injection:** Hilt
-- **Cơ sở dữ liệu:** Room Database (chốt Baseline Schema V1, bảo vệ dữ liệu người dùng khi cập nhật)
-- **Lưu trữ Cài đặt:** DataStore Preferences
-- **Quản lý Nền:** WorkManager + BroadcastReceiver
-- **Phát Âm thanh:** Media3 ExoPlayer & Session
-- **Vị trí:** Android Framework `LocationManager` (không phụ thuộc Google Play Services)
+- 🕌 **Accurate Offline Prayer Times:** Precise calculations using the Adhan astronomical algorithm (`MUSLIMVN_DEFAULT`). Works 100% offline with flexible Adhan audio reminders.
+- 🧭 **Precise Qibla Finder:** Real-time compass navigation using device sensors and location data to find the direction of the Kaaba (Makkah).
+- 📖 **The Holy Quran:** Read all 114 Surahs with high-quality Arabic text and clean Vietnamese translations. Supports audio recitations and Mushaf page views.
+- 📅 **Hijri Calendar:** Track the Islamic lunar calendar with manual date adjustment support and major religious event reminders.
+- 🧮 **Zakat Calculator:** Comprehensive Fiqh-compliant tools for calculating Zakat on Cash, Gold, Silver, Stocks, Real Estate, and Agriculture.
+- 🤲 **Daily Azkar & 99 Names of Allah:** Morning/Evening supplications from *Hisnul Muslim* and the beautiful names of Allah with Vietnamese meanings.
+- 🎙️ **Scholars & Podcasts:** Stream world-class podcasts (Muslim Central) and localized Vietnamese lectures from trusted scholars.
 
 ---
 
-## 🚀 Hướng dẫn Biên dịch (Build Instructions)
+## 🛠 Tech Stack & Architecture
 
-### Yêu cầu môi trường
-- Android Studio Ladybug (hoặc mới hơn)
-- JDK 17 hoặc JDK 21 (ghim tương thích AGP)
-- Android SDK 36 (compileSdk 37, minSdk 26, targetSdk 36)
+Built with modern Android development practices to ensure performance, reliability, and maintainability.
 
-### Lệnh build cơ bản
+- **UI:** Jetpack Compose with Material 3 Adaptive Design.
+- **Navigation:** Jetpack Navigation 3 (Type-safe routing).
+- **Architecture:** Clean Architecture + MVVM + Repository Pattern.
+- **Dependency Injection:** Hilt (Dagger).
+- **Local Storage:** Room Database (with V1 Baseline Schemas) and DataStore Preferences.
+- **Background Tasks:** WorkManager & BroadcastReceivers for reliable Adhan scheduling.
+- **Media Playback:** Media3 ExoPlayer & Session integration.
+- **Privacy Engine:** Android Framework `LocationManager` (No Google Play Services dependency - perfect for F-Droid).
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Android Studio Ladybug | 2024.2.1 or newer.
+- JDK 17 or JDK 21.
+- Android SDK 36 (targetSdk 36, minSdk 26).
+
+### Build Instructions
 ```bash
-# Clone repository
+# Clone the repository
 git clone https://github.com/MuslimVN/MuslimVN.git
 cd MuslimVN
 
-# Biên dịch bản Debug
+# Build Debug APK
 ./gradlew assembleDebug
 
-# Chạy Unit Tests
+# Run Unit Tests (Golden Tests included)
 ./gradlew testDebugUnitTest
 
-# Biên dịch bản Release APK / AAB
-./gradlew assembleRelease bundleRelease
+# Build Release Bundle (AAB)
+./gradlew bundleRelease
 ```
 
-### Cấu hình Ký bản phát hành (Keystore Setup)
-1. Copy file mẫu: `cp keystore.properties.example keystore.properties`
-2. Mở file `keystore.properties` và điền thông tin file `.jks`:
-   ```properties
-   storeFile=your_keystore.jks
-   storePassword=your_password
-   keyAlias=your_alias
-   keyPassword=your_password
-   ```
-3. Chạy `./gradlew assembleRelease` để tạo APK phát hành đã ký. Nếu không có file `keystore.properties`, Gradle sẽ tự động tạo AAB/APK chưa ký (dành cho F-Droid tự ký).
+### Keystore Configuration
+To sign your release builds, create a `keystore.properties` file in the root directory based on the provided template:
+```properties
+storeFile=your_keystore.jks
+storePassword=your_password
+keyAlias=your_alias
+keyPassword=your_password
+```
+If this file is missing, the project will generate an **unsigned** release build (ideal for F-Droid automated signing).
 
 ---
 
-## 📜 Giấy phép (License)
+## 🔒 Privacy & Security
 
-- **Mã nguồn:** [GNU General Public License v3.0](LICENSE) (GPL-3.0-or-later).
-- **Chi tiết bản quyền tài sản & dữ liệu:** Xem tại [CONTENT_SOURCES.md](docs/CONTENT_SOURCES.md).
-- **Chính sách quyền riêng tư:** Xem tại [PRIVACY.md](PRIVACY.md).
+We take user privacy seriously:
+- **Zero Tracking:** No analytics, no crashes reporting to 3rd party servers, and no advertisements.
+- **Local Processing:** Your location coordinates never leave your device.
+- **Open Source:** Audit the code yourself to verify our privacy claims.
+- See our full [Privacy Policy](PRIVACY.md).
+
+---
+
+## 📜 License & Content Attribution
+
+- **Mã nguồn (Source Code):** Licensed under [GNU General Public License v3.0](LICENSE) (GPL-3.0-or-later).
+- **Content & Assets:** Detailed sources for Quran translations, fonts, and audio can be found in [CONTENT_SOURCES.md](docs/CONTENT_SOURCES.md).
+
+---
+
+## 🤝 Contributing & Feedback
+
+Contributions are welcome! Please feel free to submit a Pull Request or open an issue for bugs and feature requests on our [GitHub Issues](https://github.com/MuslimVN/MuslimVN/issues).
+
+---
+*Developed with ❤️ by the MuslimVN Community.*
