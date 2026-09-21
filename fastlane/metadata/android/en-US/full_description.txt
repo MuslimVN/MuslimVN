@@ -1,0 +1,35 @@
+MuslimVN is an open-source mobile app designed for the Muslim community in Vietnam and worldwide, providing a comprehensive, accurate, ad-free, and privacy-focused Islamic companion.
+
+✨ KEY FEATURES:
+
+🕌 ACCURATE OFFLINE PRAYER TIMES & ADHAN NOTIFICATIONS
+• Precise prayer times calculated using the Adhan astronomical algorithm tailored for locations in Vietnam.
+• Works 100% offline without needing an active internet connection.
+• Custom Adhan audio reminders with reciters (Mishary Alafasi, Hamad Daghriry, etc.).
+• Choose your city from 63 provinces/cities in Vietnam or use automatic location lookup.
+
+🧭 PRECISE QIBLA FINDER
+• Real-time compass navigation using device sensors and geographic coordinates to point accurately toward the Kaaba (Makkah).
+
+📖 HOLY QURAN WITH VIETNAMESE TRANSLATION
+• Read all 114 Surahs with high-quality Arabic text and clean Vietnamese translations.
+• Listen to audio recitations per Ayah or Surah from renowned Qaris.
+• Bookmarks, Surah search, and flexible layout options.
+
+📅 HIJRI CALENDAR & ISLAMIC EVENTS
+• Lunar Hijri calendar with manual date adjustment support for local moon sighting.
+• Track key Islamic dates and holidays (Ramadan, Eid al-Fitr, Eid al-Adha, etc.).
+
+🧮 FIQH-COMPLIANT ZAKAT CALCULATOR
+• Comprehensive calculator for Zakat on Cash, Gold, Silver, Stocks, Real Estate, and Agriculture.
+
+🤲 DAILY AZKAR & 99 NAMES OF ALLAH
+• Morning/Evening and post-prayer supplications from Hisnul Muslim.
+• Read and learn the 99 Beautiful Names of Allah with meanings.
+
+🎙️ SCHOLARS & PODCASTS
+• Stream world-class Islamic lectures and podcasts from Muslim Central.
+• Localized content from trusted Vietnamese Muslim scholars.
+
+🔒 PRIVACY & OPEN SOURCE
+• 100% Open Source (GPLv3), zero personal data tracking, no analytics, no ads.

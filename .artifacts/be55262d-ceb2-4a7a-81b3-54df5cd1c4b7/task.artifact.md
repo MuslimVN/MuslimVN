@@ -1,5 +1,0 @@
-- [ ] Create IslamHouse API models and Retrofit service (`IslamHouseApiService.kt`, `IslamHouseModels.kt`)
-- [ ] Implement `IslamHouseRepository` and wire up dependency injection (`NetworkModule.kt`, `RepositoryModule.kt`)
-- [ ] Update `MachZenViewModel.kt` to load documents and pagination from IslamHouse API
-- [ ] Update `MachZenScreen.kt` to replace the document placeholder with a rich Material 3 document list
-- [ ] Verify build and test functionality

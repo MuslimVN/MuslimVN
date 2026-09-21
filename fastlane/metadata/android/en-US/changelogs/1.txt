@@ -1,0 +1,5 @@
+Welcome to the initial release of MuslimVN V1!
+• Accurate offline prayer times for 63 provinces in Vietnam.
+• Customizable Adhan audio reminders.
+• Qibla compass, Holy Quran with Vietnamese translation, Hijri calendar, Zakat calculator & Azkar.
+• Completely open-source, ad-free, and privacy-focused.
