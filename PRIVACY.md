@@ -60,5 +60,6 @@ Cộng đồng phát triển **MuslimVN** ("chúng tôi") cam kết tôn trọng
 
 ## 6. Liên hệ & Đóng góp
 
-Nếu bạn có bất kỳ câu hỏi nào về Chính sách quyền riêng tư này hoặc muốn báo lỗi ứng dụng, vui lòng liên hệ qua:
+Nếu bạn có bất kỳ câu hỏi nào về Chính sách quyền riêng tư này hoặc muốn báo lỗi ứng dụng, vui lòng liên hệ:
+- **Tác giả & Lead Developer:** Abdol Hamid ([abdolhamid.dev@gmail.com](mailto:abdolhamid.dev@gmail.com))
 - **GitHub Issues:** [https://github.com/MuslimVN/MuslimVN/issues](https://github.com/MuslimVN/MuslimVN/issues)
