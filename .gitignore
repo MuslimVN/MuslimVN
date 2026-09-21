@@ -16,7 +16,6 @@ keystore.properties
 # Release builds & binaries
 /app/release/
 *.apk
-!MuslimVN.apk
 *.aab
 *.ap_
 *.dm

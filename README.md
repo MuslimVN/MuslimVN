@@ -8,18 +8,7 @@
   <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
   <a href="https://developer.android.com/about/dashboards"><img src="https://img.shields.io/badge/SDK-26%2B-brightgreen.svg" alt="Android SDK"></a>
   <a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-2.1.0-purple.svg" alt="Kotlin"></a>
-</p>
-
-<p align="center">
-  <a href="MuslimVN.apk">
-    <img src="https://img.shields.io/badge/Download_APK-v1.0.0_Latest-2ea44f?style=for-the-badge&logo=android&logoColor=white" alt="Download APK v1.0.0">
-  </a>
-  &nbsp;&nbsp;
-  <a href="https://www.buymeacoffee.com/hamidabdol" target="_blank">
-    <img src="https://img.shields.io/badge/Buy_Me_A_Coffee-Donate-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee">
-  </a>
-  <br>
-  <sub><b>Latest Version:</b> <code>v1.0.0</code> (Build 1) — Direct APK Download & Install</sub>
+  <a href="https://www.buymeacoffee.com/hamidabdol" target="_blank"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-Donate-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"></a>
 </p>
 
 <p align="center">
