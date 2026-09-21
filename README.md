@@ -28,9 +28,7 @@
 </p>
 
 <p align="center">
-  <b>MuslimVN</b> là ứng dụng di động chuyên nghiệp, tôn trọng quyền riêng tư và mã nguồn mở dành riêng cho cộng đồng Hồi giáo tại Việt Nam.
-  <br>
-  <i>MuslimVN is a professional, privacy-focused, and open-source mobile application tailored for the Muslim community in Vietnam. It provides highly accurate offline prayer times, Qibla direction, Holy Quran with Vietnamese translation, Zakat tools, and rich Islamic educational content.</i>
+  <b>MuslimVN</b> is a professional, privacy-focused, and open-source mobile application tailored specifically for the Muslim community in Vietnam. It provides highly accurate offline prayer times, Qibla direction, Holy Quran with Vietnamese translations, Zakat calculation tools, and rich Islamic educational content.
 </p>
 
 ---
@@ -50,7 +48,7 @@
 </p>
 
 <details>
-  <summary><b>Show all screens / Xem tất cả màn hình ứng dụng (36 screens)</b></summary>
+  <summary><b>Show all application screens (36 screens)</b></summary>
   <br>
 
   ### Onboarding & Setup
@@ -206,7 +204,7 @@ We take user privacy seriously:
 
 ## Support & Donation
 
-If you find **MuslimVN** useful and would like to support the ongoing development, maintenance, and educational content updates, you can buy me a coffee:
+If you find **MuslimVN** useful and would like to support ongoing development, maintenance, and educational content updates, you can buy me a coffee:
 
 <a href="https://www.buymeacoffee.com/hamidabdol" target="_blank">
   <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="180">
@@ -216,14 +214,14 @@ If you find **MuslimVN** useful and would like to support the ongoing developmen
 
 ## License & Non-Commercial Policy
 
-- **Core Principle / Châm ngôn:**
+- **Core Principle:**
   > *"Islam is not something you need to pay for"*
-- **License / Giấy phép mã nguồn:** Released under **GNU GPLv3 (Non-Commercial Clause)** and **CC BY-NC-SA 4.0** ([LICENSE](LICENSE)).
-- **Strict Non-Commercial Prohibition / Nghiêm cấm Thương mại hóa:**
-  - Ứng dụng được phát triển 100% miễn phí vì cộng đồng.
-  - **Nghiêm cấm** mọi hành vi fork mã nguồn, bán lại, thu phí người dùng, chèn quảng cáo, hoặc thương mại hóa dưới bất kỳ hình thức nào.
-  - Bất kỳ dự án fork hay sản phẩm phái sinh nào **bắt buộc phải mở mã nguồn** và **giữ nguyên điều khoản phi thương mại 100%**.
-- **Content Attribution:** Detailed sources for Quran translations, fonts, and audio can be found in [CONTENT_SOURCES.md](docs/CONTENT_SOURCES.md).
+- **Source Code License:** Released under **GNU GPLv3 (Non-Commercial Clause)** and **CC BY-NC-SA 4.0** ([LICENSE](LICENSE)).
+- **Strict Non-Commercial Prohibition:**
+  - **100% Free & Community-First:** This application is developed strictly for the benefit of the Muslim community.
+  - **Commercial Monetization Prohibited:** Selling copies, inserting advertisements, charging subscriptions, or behind-paywall distribution of this codebase, copies, or derivative works is **strictly prohibited**.
+  - **Share-Alike Requirement:** Any forks, modifications, or derivative projects **must remain open-source** and distributed under the exact same 100% free and non-commercial license terms.
+- **Content Attribution:** Detailed sources for Quran translations, fonts, and audio recitations can be found in [CONTENT_SOURCES.md](docs/CONTENT_SOURCES.md).
 
 ---
 

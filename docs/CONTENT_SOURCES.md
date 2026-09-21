@@ -1,12 +1,12 @@
-# MuslimVN — Nguồn gốc & Giấy phép Nội dung (Content Sources & Licenses)
+# Content Sources & Licenses — MuslimVN
 
-> **Tài liệu kiểm kê nội dung ứng dụng MuslimVN V1**
+> **Application Content Audit & Attribution Document**
 
 ---
 
-## 1. Mã nguồn & Thư viện
-- **Mã nguồn ứng dụng:** GNU General Public License v3.0 or later (GPL-3.0-or-later).
-- **Thư viện bên thứ ba:**
+## 1. Source Code & Libraries
+- **Application Source Code:** GNU General Public License v3.0 or later (GPL-3.0-or-later) with Non-Commercial Terms.
+- **Third-Party Libraries:**
   - Android Jetpack, Compose, Hilt, Room, Media3, DataStore, WorkManager, Paging: Apache-2.0.
   - Adhan (`com.batoulapps.adhan`): MIT License.
   - Coil: Apache-2.0.
@@ -16,38 +16,38 @@
 
 ---
 
-## 2. Phông chữ (Fonts)
+## 2. Typography & Fonts
 - **Amiri Font** (`res/font/amiri_*.ttf`): SIL Open Font License 1.1 (OFL).
 - **Inter Font** (`res/font/inter_variable.ttf`): SIL Open Font License 1.1 (OFL).
 
 ---
 
-## 3. Văn bản & Dữ liệu Tôn giáo
+## 3. Text & Religious Data
 
-### 3.1 Kinh Quran & Bản dịch
-- **Văn bản Ả Rập (Arabic Text):** Nguồn Tanzil.net / Quran.com API.
-- **Bản dịch tiếng Việt (`assets/quran_vi.json`):** Bản dịch ý nghĩa Kinh Quran tiếng Việt.
+### 3.1 Holy Quran & Translations
+- **Arabic Text:** Tanzil.net / Quran.com API v4.
+- **Vietnamese Translation (`assets/quran_vi.json`):** Meaning of the Holy Quran translated into Vietnamese.
 - **Tafsir:** Quran.com API v4 (Tafsir Ibn Kathir / Saadi / Khiar).
 
-### 3.2 Giờ cầu nguyện & Lịch Hijri
-- **Thuật toán tính giờ cầu nguyện:** Thư viện Adhan (bởi Batoul Apps - MIT License).
-- **Phương pháp mặc định:** `MUSLIMVN_DEFAULT` (Góc Fajr 18°, Góc Isha 18°).
-- **Lịch Hijri:** Aladhan API (`api.aladhan.com`) kết hợp tính toán địa phương offline.
+### 3.2 Prayer Calculations & Hijri Calendar
+- **Prayer Calculation Algorithm:** Adhan Library (Batoul Apps - MIT License).
+- **Default Calculation Method:** `MUSLIMVN_DEFAULT` (Fajr Angle 18°, Isha Angle 18°).
+- **Hijri Calendar:** Aladhan API (`api.aladhan.com`) integrated with offline local calculations.
 
-### 3.3 Azkar & 99 Danh xưng Allah
-- **Azkar (`assets/azkar_vi.json`):** Tuyển tập Azkar từ Hisnul Muslim (Pháo đài người Muslim).
-- **99 Danh xưng Allah (`assets/NameAllah.json`):** Tên và ý nghĩa 99 danh xưng của Allah bằng tiếng Việt.
+### 3.3 Azkar & 99 Names of Allah
+- **Azkar (`assets/azkar_vi.json`):** Collection of supplications from *Hisnul Muslim* (Fortress of the Muslim).
+- **99 Names of Allah (`assets/NameAllah.json`):** Beautiful names and Vietnamese meanings of Allah.
 
-### 3.4 Hadith & Học giả
-- **Hadith hằng ngày:** HadeethEnc API (`hadeethenc.com`).
-- **Podcast Học giả thế giới:** RSS Feed Muslim Central (`rss.muslimcentral.com`).
-- **Tài liệu Mách Zên:** IslamHouse API v3 (`api3.islamhouse.com`).
-- **Kênh Youtube học giả Việt Nam (Mách Zên & Gosaly Ahmad):** Đã có sự cho phép công khai từ chủ sở hữu kênh và IslamHouse.
+### 3.4 Hadith & Scholars Content
+- **Daily Hadith Quotes:** HadeethEnc API (`hadeethenc.com`).
+- **World Scholars Podcasts:** RSS Feed Muslim Central (`rss.muslimcentral.com`).
+- **Mach Zen Documents:** IslamHouse API v3 (`api3.islamhouse.com`).
+- **Vietnamese Scholars YouTube Feeds (Mach Zen & Gosaly Ahmad):** Public content accessed with creator and IslamHouse public attribution.
 
 ---
 
-## 4. Âm thanh (Audio Assets)
-- **Âm thanh Adhan (`assets/audio/adhan/*.mp3`):** Nguồn công khai từ AlAdhan Project.
+## 4. Audio Assets
+- **Adhan Audio Recitations (`assets/audio/adhan/*.mp3`):** Public domain / AlAdhan Project recitations:
   - `Mishary-Alafasi.mp3`
   - `hamad_daghriry.mp3`
   - `Ahmed-El-Kourdi.mp3`
@@ -55,9 +55,9 @@
   - `Mansoor-Az-Zahrani.mp3`
   - `Rabeh-Ibn-Darah-Al-Jazairi.mp3`
   - `Fajaz_Azan.mp3`
-- **Âm thông báo (`res/raw/muslimvn_notification.mp3`):** Âm báo tùy chỉnh của ứng dụng.
+- **Notification Tones (`res/raw/muslimvn_notification.mp3`):** Custom application alert tone.
 
 ---
 
-## 5. Tuyên bố Miễn trừ Trách nhiệm (Disclaimer)
-> MuslimVN là ứng dụng độc lập được phát triển bởi cộng đồng MuslimVN. Ứng dụng không liên kết chính thức, không được tài trợ hoặc bảo trợ bởi các học giả, Qari, tổ chức Muslim Central hay IslamHouse. Mọi thông tin giờ cầu nguyện và Zakat mang tính chất tham khảo, người dùng nên đối chiếu với cộng đồng và giáo sĩ địa phương.
+## 5. Disclaimer
+> MuslimVN is an independent open-source application developed by the MuslimVN community. The application is not officially affiliated with, sponsored, or endorsed by scholars, Qaris, Muslim Central, or IslamHouse organizations. Prayer times and Zakat tools are provided for informational and devotional purposes; users should verify calculations with local Islamic authorities and community centers.
