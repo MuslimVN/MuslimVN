@@ -5,7 +5,12 @@
 <h1 align="center">MuslimVN — The Islamic Companion for Vietnam</h1>
 
 <p align="center">
-  <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
+  <i>"Islam is not something you need to pay for"</i>
+</p>
+
+<p align="center">
+  <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3_NC-blue.svg" alt="License: GPLv3 NC"></a>
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Non--Commercial-CC_BY--NC--SA_4.0-orange.svg" alt="Non-Commercial CC BY-NC-SA 4.0"></a>
   <a href="https://developer.android.com/about/dashboards"><img src="https://img.shields.io/badge/SDK-26%2B-brightgreen.svg" alt="Android SDK"></a>
   <a href="https://kotlinlang.org/"><img src="https://img.shields.io/badge/Kotlin-2.1.0-purple.svg" alt="Kotlin"></a>
 </p>
@@ -209,10 +214,16 @@ If you find **MuslimVN** useful and would like to support the ongoing developmen
 
 ---
 
-## License & Content Attribution
+## License & Non-Commercial Policy
 
-- **Source Code:** Licensed under [GNU General Public License v3.0](LICENSE) (GPL-3.0-or-later).
-- **Content & Assets:** Detailed sources for Quran translations, fonts, and audio can be found in [CONTENT_SOURCES.md](docs/CONTENT_SOURCES.md).
+- **Core Principle / Châm ngôn:**
+  > *"Islam is not something you need to pay for"*
+- **License / Giấy phép mã nguồn:** Released under **GNU GPLv3 (Non-Commercial Clause)** and **CC BY-NC-SA 4.0** ([LICENSE](LICENSE)).
+- **Strict Non-Commercial Prohibition / Nghiêm cấm Thương mại hóa:**
+  - Ứng dụng được phát triển 100% miễn phí vì cộng đồng.
+  - **Nghiêm cấm** mọi hành vi fork mã nguồn, bán lại, thu phí người dùng, chèn quảng cáo, hoặc thương mại hóa dưới bất kỳ hình thức nào.
+  - Bất kỳ dự án fork hay sản phẩm phái sinh nào **bắt buộc phải mở mã nguồn** và **giữ nguyên điều khoản phi thương mại 100%**.
+- **Content Attribution:** Detailed sources for Quran translations, fonts, and audio can be found in [CONTENT_SOURCES.md](docs/CONTENT_SOURCES.md).
 
 ---
 
